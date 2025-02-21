@@ -264,6 +264,7 @@
         #history ul, #analytics p {
             margin: 10px 0; /* 10px buffer above and below lists/paragraphs */
         }
+        /* Light Mode Adjustments */
         .light-mode {
             background: linear-gradient(to bottom, #e0e0e0, #b0b0b0);
             color: #000000;
@@ -286,52 +287,78 @@
         .light-mode .input-field {
             background: rgba(220, 220, 220, 0.7);
             color: #000000;
-            box-shadow: 0 0 10px #00FFFF;
+            box-shadow: 0 0 10px #000000; /* Dark shadow for visibility */
         }
         .light-mode .input-field::placeholder {
             color: #666;
         }
         .light-mode .logo-text {
-            background: transparent;
-            box-shadow: 0 0 10px #00FFFF;
-            text-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF; /* Aqua glow in light mode */
-            color: #00FFFF;
+            background: #00FFFF; /* Aqua fill in light mode */
+            color: #808080; /* Grey text inside aqua box */
+            text-shadow: none; /* Remove shadow */
+            box-shadow: none; /* Remove shadow */
+        }
+        .light-mode .logo-icon {
+            text-shadow: 0 0 10px #000000, 0 0 20px #000000; /* Dark glow for visibility */
+        }
+        .light-mode .model-text {
+            background: #00FFFF; /* Aqua fill in light mode */
+            color: #808080; /* Grey text inside aqua box */
+            text-shadow: none; /* Remove shadow */
+            box-shadow: none; /* Remove shadow */
+        }
+        .light-mode .model-dropdown {
+            background: linear-gradient(to bottom, rgba(200, 200, 200, 0.9), rgba(180, 180, 180, 0.9));
+            box-shadow: 0 0 10px #000000; /* Dark shadow for visibility */
+        }
+        .light-mode .model-option {
+            text-shadow: 0 0 5px #000000; /* Dark glow for visibility */
         }
         .light-mode .toolbar-button {
-            background: transparent;
-            color: #00FFFF;
-            text-shadow: 0 0 10px #00FFFF;
-            box-shadow: 0 0 10px #00FFFF;
+            background: #00FFFF; /* Aqua fill in light mode */
+            color: #808080; /* Grey icon inside aqua box */
+            text-shadow: none; /* Remove shadow */
+            box-shadow: none; /* Remove shadow */
         }
         .light-mode .toolbar-button:hover {
-            background: rgba(0, 255, 255, 0.2);
+            background: rgba(0, 255, 255, 0.8); /* Slightly darker aqua on hover */
         }
         .light-mode .toggle-button.active {
-            background: transparent;
+            background: #FF9500; /* Orange fill for active state */
+            color: #808080; /* Grey icon inside orange box */
+            text-shadow: none; /* Remove shadow */
+            box-shadow: none; /* Remove shadow */
+        }
+        .light-mode .nav-item {
+            text-shadow: 0 0 10px #000000; /* Dark glow for visibility */
+        }
+        .light-mode .nav-item.active {
             color: #FF9500;
-            text-shadow: 0 0 10px #FF9500;
-            box-shadow: 0 0 10px #FF9500;
+            text-shadow: 0 0 10px #000000; /* Dark glow for orange icons */
+        }
+        .light-mode .footer {
+            color: #808080; /* Grey text in light mode for readability */
         }
         .light-mode .settings-input, .light-mode .theme-select {
             background: linear-gradient(to bottom, rgba(220, 220, 220, 0.8), rgba(200, 200, 200, 0.8));
             border: 1px solid rgba(0, 0, 0, 0.2);
             color: #000000;
-            box-shadow: 0 0 10px #00FFFF;
+            box-shadow: 0 0 10px #000000; /* Dark shadow for visibility */
         }
         .light-mode .settings-input::placeholder {
             color: #666;
         }
         .light-mode input[type="range"] {
             background: linear-gradient(to right, rgba(0, 255, 255, 0.5), rgba(0, 139, 139, 0.5));
-            box-shadow: 0 0 10px #00FFFF;
+            box-shadow: 0 0 10px #000000; /* Dark shadow for visibility */
         }
         .light-mode input[type="range"]::-webkit-slider-thumb {
             background: #00FFFF;
-            box-shadow: 0 0 10px #00FFFF;
+            box-shadow: 0 0 10px #000000; /* Dark shadow for visibility */
         }
         .light-mode input[type="range"]::-moz-range-thumb {
             background: #00FFFF;
-            box-shadow: 0 0 10px #00FFFF;
+            box-shadow: 0 0 10px #000000; /* Dark shadow for visibility */
         }
         .light-mode input[type="range"]::-webkit-slider-runnable-track {
             background: linear-gradient(to right, rgba(0, 255, 255, 0.5), rgba(0, 139, 139, 0.5));
