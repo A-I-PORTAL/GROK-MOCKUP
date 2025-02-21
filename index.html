@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grok3 AI Interface Mockup by AI PORTAL</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <title>Grok3 AI Interface Mockup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,19 +13,86 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #121212;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(to bottom, #1a1a1a, #333333);
             color: #ffffff;
             height: 100vh;
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            transition: background 0.3s, color 0.3s;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: transparent;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 11;
+            height: 40px; /* Fixed height for consistency */
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .logo-icon {
+            color: #00FFFF;
+            font-size: 24px;
+            margin-right: 10px;
+            text-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF;
+        }
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            padding: 5px 10px;
+            background: transparent;
+            border-radius: 15px;
+            color: #00FFFF;
+            text-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+        .model-selector {
+            position: relative;
+            display: inline-block;
+        }
+        .model-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            padding: 5px 10px;
+            background: transparent;
+            border-radius: 15px;
+            color: #00FFFF;
+            text-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF;
+            box-shadow: 0 0 10px #00FFFF;
+            cursor: pointer;
+        }
+        .model-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: linear-gradient(to bottom, rgba(50, 50, 50, 0.9), rgba(30, 30, 30, 0.9));
+            border-radius: 10px;
+            box-shadow: 0 0 10px #00FFFF;
+            z-index: 12;
+        }
+        .model-option {
+            padding: 5px 10px;
+            color: #00FFFF;
+            text-shadow: 0 0 5px #00FFFF;
+            cursor: pointer;
+        }
+        .model-option:hover {
+            background: rgba(0, 255, 255, 0.2);
         }
         .content {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
-            padding-bottom: 120px; /* Space for fixed toolbar and nav */
+            padding: 60px 20px 180px 20px; /* Consistent top buffer */
         }
         .section {
             display: none;
@@ -33,22 +100,16 @@
         .section.active {
             display: block;
         }
-        #chat {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
         #chat .chat-container {
-            flex: 1;
             overflow-y: auto;
             padding-bottom: 10px;
         }
         #chat .chat-toolbar {
             position: fixed;
-            bottom: 60px; /* Above nav bar */
+            bottom: 70px;
             left: 0;
             width: 100%;
-            background-color: #1E1E1E;
+            background: transparent;
             padding: 10px;
             display: flex;
             flex-wrap: wrap;
@@ -56,18 +117,20 @@
             z-index: 10;
         }
         .message {
-            margin: 10px;
+            margin: 10px 0; /* 10px buffer between chat messages */
             padding: 10px;
             border-radius: 10px;
             max-width: 80%;
+            background: rgba(50, 50, 50, 0.7);
+            backdrop-filter: blur(5px);
         }
         .message.user {
-            background-color: #2C2C2C;
             margin-left: auto;
+            background: rgba(70, 70, 70, 0.7);
         }
         .message.ai {
-            background-color: #1E1E1E;
             margin-right: auto;
+            background: rgba(50, 50, 50, 0.7);
         }
         .message img, .message video {
             max-width: 100%;
@@ -77,76 +140,264 @@
             flex: 1;
             padding: 10px;
             border-radius: 20px;
-            background-color: #333;
+            background: rgba(90, 90, 90, 0.7);
+            backdrop-filter: blur(5px);
             color: #fff;
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             margin-right: 10px;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+        .input-field::placeholder {
+            color: #ccc;
         }
         .toolbar-button {
-            background-color: #007AFF;
-            color: #fff;
+            background: transparent;
+            color: #00FFFF;
             border: none;
             padding: 10px;
             border-radius: 20px;
             margin: 5px;
             cursor: pointer;
+            transition: background 0.3s;
+            text-shadow: 0 0 10px #00FFFF;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+        .toolbar-button:hover {
+            background: rgba(0, 255, 255, 0.2);
         }
         .toggle-button.active {
-            background-color: #FF9500;
+            background: transparent;
+            color: #FF9500;
+            text-shadow: 0 0 10px #FF9500;
+            box-shadow: 0 0 10px #FF9500;
         }
         .nav-bar {
             position: fixed;
-            bottom: 0;
+            bottom: 30px;
             width: 100%;
-            background-color: #1E1E1E;
+            background: linear-gradient(to bottom, rgba(50, 50, 50, 0.8), rgba(30, 30, 30, 0.8));
+            backdrop-filter: blur(10px);
             display: flex;
             justify-content: space-around;
             padding: 10px 0;
             z-index: 10;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
         .nav-item {
-            color: #007AFF;
+            color: #00FFFF;
             cursor: pointer;
+            text-shadow: 0 0 10px #00FFFF;
+            transition: color 0.3s, text-shadow 0.3s;
         }
         .nav-item.active {
             color: #FF9500;
+            text-shadow: 0 0 10px #FF9500;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(to bottom, rgba(50, 50, 50, 0.8), rgba(30, 30, 30, 0.8));
+            backdrop-filter: blur(10px);
+            text-align: center;
+            padding: 5px;
+            font-size: 12px;
+            color: #ccc;
+            z-index: 10;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .settings-input, .theme-select {
+            padding: 10px;
+            border-radius: 20px;
+            background: linear-gradient(to bottom, rgba(90, 90, 90, 0.8), rgba(70, 70, 70, 0.8));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            margin: 10px 0; /* 10px buffer above and below */
+            width: 100%;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+        .settings-input::placeholder {
+            color: #ccc;
+        }
+        /* Volume Slider Styling */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(to right, rgba(0, 255, 255, 0.5), rgba(0, 139, 139, 0.5));
+            border-radius: 5px;
+            outline: none;
+            box-shadow: 0 0 10px #00FFFF;
+            margin: 10px 0; /* 10px buffer above and below */
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #00FFFF;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #00FFFF;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+        input[type="range"]::-webkit-slider-runnable-track {
+            background: linear-gradient(to right, rgba(0, 255, 255, 0.5), rgba(0, 139, 139, 0.5));
+            border-radius: 5px;
+        }
+        input[type="range"]::-moz-range-track {
+            background: linear-gradient(to right, rgba(0, 255, 255, 0.5), rgba(0, 139, 139, 0.5));
+            border-radius: 5px;
+        }
+        /* Non-chat page content spacing */
+        #history h2, #settings h2, #device h2, #analytics h2, #profile h2 {
+            margin: 10px 0; /* 10px buffer above and below headings */
+        }
+        #history ul, #analytics p {
+            margin: 10px 0; /* 10px buffer above and below lists/paragraphs */
+        }
+        .light-mode {
+            background: linear-gradient(to bottom, #e0e0e0, #b0b0b0);
+            color: #000000;
+        }
+        .light-mode .header, .light-mode .chat-toolbar, .light-mode .nav-bar, .light-mode .footer {
+            background: linear-gradient(to bottom, rgba(200, 200, 200, 0.8), rgba(180, 180, 180, 0.8));
+        }
+        .light-mode .message.user {
+            background: rgba(180, 180, 180, 0.7);
+        }
+        .light-mode .message.ai {
+            background: rgba(200, 200, 200, 0.7);
+        }
+        .light-mode .input-field {
+            background: rgba(220, 220, 220, 0.7);
+            color: #000000;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+        .light-mode .input-field::placeholder {
+            color: #666;
+        }
+        .light-mode .logo-text {
+            background: transparent;
+            box-shadow: 0 0 10px #00FFFF;
+            text-shadow: 0 0 10px #000000;
+            color: #00FFFF;
+        }
+        .light-mode .toolbar-button {
+            background: transparent;
+            color: #00FFFF;
+            text-shadow: 0 0 10px #00FFFF;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+        .light-mode .toolbar-button:hover {
+            background: rgba(0, 255, 255, 0.2);
+        }
+        .light-mode .toggle-button.active {
+            background: transparent;
+            color: #FF9500;
+            text-shadow: 0 0 10px #FF9500;
+            box-shadow: 0 0 10px #FF9500;
+        }
+        .light-mode .settings-input, .light-mode .theme-select {
+            background: linear-gradient(to bottom, rgba(220, 220, 220, 0.8), rgba(200, 200, 200, 0.8));
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            color: #000000;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+        .light-mode .settings-input::placeholder {
+            color: #666;
+        }
+        .light-mode input[type="range"] {
+            background: linear-gradient(to right, rgba(0, 255, 255, 0.5), rgba(0, 139, 139, 0.5));
+            box-shadow: 0 0 10px #00FFFF;
+        }
+        .light-mode input[type="range"]::-webkit-slider-thumb {
+            background: #00FFFF;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+        .light-mode input[type="range"]::-moz-range-thumb {
+            background: #00FFFF;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+        .light-mode input[type="range"]::-webkit-slider-runnable-track {
+            background: linear-gradient(to right, rgba(0, 255, 255, 0.5), rgba(0, 139, 139, 0.5));
+        }
+        .light-mode input[type="range"]::-moz-range-track {
+            background: linear-gradient(to right, rgba(0, 255, 255, 0.5), rgba(0, 139, 139, 0.5));
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        <div class="logo-container">
+            <i class="fa-solid fa-robot logo-icon"></i>
+            <span class="logo-text">AI PORTAL</span>
+        </div>
+        <div class="model-selector">
+            <span class="model-text" onclick="toggleModelDropdown()">GROK</span>
+            <div class="model-dropdown" id="modelDropdown">
+                <div class="model-option" onclick="selectModel('Grok')">Grok</div>
+                <div class="model-option" onclick="selectModel('Claude')">Claude</div>
+                <div class="model-option" onclick="selectModel('Gemini')">Gemini</div>
+                <div class="model-option" onclick="selectModel('LLaMA')">LLaMA</div>
+            </div>
+        </div>
+    </div>
     <div class="content">
         <div class="section active" id="chat">
             <div class="chat-container" id="chatContainer"></div>
             <div class="chat-toolbar">
                 <input type="text" class="input-field" id="inputField" placeholder="Type your message...">
-                <button class="toolbar-button" onclick="sendMessage()">Send</button>
+                <button class="toolbar-button" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
                 <button class="toolbar-button" onclick="voiceInput()"><i class="fas fa-microphone"></i></button>
                 <button class="toolbar-button" onclick="uploadImage()"><i class="fas fa-image"></i></button>
                 <button class="toolbar-button" onclick="uploadVideo()"><i class="fas fa-video"></i></button>
-                <button class="toolbar-button toggle-button" id="deepSearch" onclick="toggleDeepSearch()">DeepSearch</button>
-                <button class="toolbar-button toggle-button" id="thinkMode" onclick="toggleThinkMode()">Think Mode</button>
+                <button class="toolbar-button toggle-button" id="deepSearch" onclick="toggleDeepSearch()"><i class="fas fa-search"></i></button>
+                <button class="toolbar-button toggle-button" id="thinkMode" onclick="toggleThinkMode()"><i class="fas fa-brain"></i></button>
             </div>
         </div>
         <div class="section" id="history">
-            <h2>History</h2>
-            <p>Conversation history goes here.</p>
+            <h2>Conversation History</h2>
+            <ul id="historyList">
+                <li onclick="loadConversation(1)">Conversation 1 - 2023-10-01</li>
+                <li onclick="loadConversation(2)">Conversation 2 - 2023-10-02</li>
+            </ul>
         </div>
         <div class="section" id="settings">
             <h2>Settings</h2>
-            <label>API Key: <input type="text" id="apiKey" placeholder="Enter API key"></label>
-            <label>Unlock Key: <input type="text" id="unlockKey" placeholder="Enter unlock key"><button onclick="applyUnlockKey()">Apply</button></label>
+            <label>Theme: 
+                <select class="theme-select" id="themeSelect" onchange="setTheme(this.value)">
+                    <option value="dark">Dark</option>
+                    <option value="light">Light</option>
+                </select>
+            </label><br>
+            <label>API Key: <input type="text" class="settings-input" id="apiKey" placeholder="Enter API key"></label><br>
+            <label>Unlock Key: <input type="text" class="settings-input" id="unlockKey" placeholder="Enter unlock key"><button class="toolbar-button" onclick="applyUnlockKey()">Apply</button></label>
         </div>
         <div class="section" id="device">
-            <h2>Device</h2>
-            <p>Device controls go here.</p>
+            <h2>Device Controls</h2>
+            <label>Volume: <input type="range" min="0" max="100" value="50" id="volumeSlider"></label><br>
+            <label>Alarm: <input type="text" class="settings-input" id="alarms" placeholder="e.g., 7:00 AM"><button class="toolbar-button" onclick="setAlarm()">Set</button></label>
         </div>
         <div class="section" id="analytics">
             <h2>Analytics</h2>
-            <p>Analytics data goes here.</p>
+            <p>Total Queries: 42</p>
+            <p>Average Response Time: 1.2s</p>
+            <p>Active Sessions: 3</p>
         </div>
         <div class="section" id="profile">
             <h2>Profile</h2>
-            <p>User profile goes here.</p>
+            <label>Username: <input type="text" class="settings-input" id="username" value="User123"></label><br>
+            <label>Email: <input type="email" class="settings-input" id="email" value="user@example.com"></label><br>
+            <button class="toolbar-button" onclick="saveProfile()">Save</button>
         </div>
     </div>
     <div class="nav-bar">
@@ -157,18 +408,27 @@
         <div class="nav-item" onclick="switchSection('analytics')"><i class="fas fa-chart-bar"></i></div>
         <div class="nav-item" onclick="switchSection('profile')"><i class="fas fa-user"></i></div>
     </div>
+    <div class="footer">Designed by SKP © 2025</div>
+
     <script>
         let deepSearch = false;
         let thinkMode = false;
         let isUnlocked = localStorage.getItem('unlocked') === 'true';
 
+        // Switch between sections
         function switchSection(sectionId) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
             document.querySelector(`.nav-item[onclick="switchSection('${sectionId}')"]`).classList.add('active');
+            if (sectionId === 'chat') {
+                document.querySelector('.chat-toolbar').style.display = 'flex';
+            } else {
+                document.querySelector('.chat-toolbar').style.display = 'none';
+            }
         }
 
+        // Send text message
         function sendMessage() {
             const input = document.getElementById('inputField');
             const message = input.value.trim();
@@ -188,6 +448,7 @@
             }
         }
 
+        // Simulate AI response
         function getAIResponse(message) {
             let prefix = '';
             if (deepSearch) prefix += 'DeepSearch: ';
@@ -201,6 +462,7 @@
             }
         }
 
+        // Add message to chat
         function addMessage(content, type, isImage = false, isVideo = false) {
             const chat = document.getElementById('chatContainer');
             const msg = document.createElement('div');
@@ -221,31 +483,47 @@
             chat.scrollTop = chat.scrollHeight;
         }
 
+        // Simulate voice input
         function voiceInput() {
             addMessage('Voice input simulation', 'user');
             setTimeout(() => addMessage('Simulated voice response', 'ai'), 1000);
         }
 
+        // Simulate image upload
         function uploadImage() {
             addMessage('Image upload simulation', 'user');
             setTimeout(() => addMessage('https://via.placeholder.com/150', 'ai', true), 1000);
         }
 
+        // Simulate video upload
         function uploadVideo() {
             addMessage('Video upload simulation', 'user');
             setTimeout(() => addMessage('https://www.w3schools.com/html/mov_bbb.mp4', 'ai', false, true), 1000);
         }
 
+        // Toggle DeepSearch
         function toggleDeepSearch() {
             deepSearch = !deepSearch;
             document.getElementById('deepSearch').classList.toggle('active');
         }
 
+        // Toggle Think Mode
         function toggleThinkMode() {
             thinkMode = !thinkMode;
             document.getElementById('thinkMode').classList.toggle('active');
         }
 
+        // Set theme (dark/light)
+        function setTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.add('light-mode');
+            } else {
+                document.body.classList.remove('light-mode');
+            }
+            localStorage.setItem('theme', theme);
+        }
+
+        // Apply unlock key
         function applyUnlockKey() {
             const key = document.getElementById('unlockKey').value;
             if (key === 'AI_PORTAL_2023') {
@@ -256,6 +534,47 @@
                 alert('Invalid unlock key');
             }
         }
+
+        // Load conversation from history
+        function loadConversation(id) {
+            alert(`Loading conversation ${id}`);
+            switchSection('chat');
+            addMessage(`Loaded conversation ${id}`, 'ai');
+        }
+
+        // Save profile
+        function saveProfile() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            localStorage.setItem('username', username);
+            localStorage.setItem('email', email);
+            alert('Profile saved');
+        }
+
+        // Set alarm simulation
+        function setAlarm() {
+            const alarm = document.getElementById('alarms').value;
+            if (alarm) {
+                alert(`Alarm set for ${alarm}`);
+            }
+        }
+
+        // Model selector functions
+        function toggleModelDropdown() {
+            const dropdown = document.getElementById('modelDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function selectModel(model) {
+            document.querySelector('.model-text').textContent = model;
+            document.getElementById('modelDropdown').style.display = 'none';
+            alert(`Selected model: ${model}`);
+        }
+
+        // Initial setup
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        setTheme(savedTheme);
+        document.getElementById('themeSelect').value = savedTheme;
     </script>
 </body>
 </html>
