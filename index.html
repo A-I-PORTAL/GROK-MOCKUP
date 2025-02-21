@@ -268,7 +268,13 @@
             background: linear-gradient(to bottom, #e0e0e0, #b0b0b0);
             color: #000000;
         }
-        .light-mode .header, .light-mode .chat-toolbar, .light-mode .nav-bar, .light-mode .footer {
+        .light-mode .header {
+            background: transparent; /* Ensure no header bar in light mode */
+        }
+        .light-mode .chat-toolbar {
+            background: transparent;
+        }
+        .light-mode .nav-bar, .light-mode .footer {
             background: linear-gradient(to bottom, rgba(200, 200, 200, 0.8), rgba(180, 180, 180, 0.8));
         }
         .light-mode .message.user {
@@ -288,7 +294,7 @@
         .light-mode .logo-text {
             background: transparent;
             box-shadow: 0 0 10px #00FFFF;
-            text-shadow: 0 0 10px #000000;
+            text-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF; /* Aqua glow in light mode */
             color: #00FFFF;
         }
         .light-mode .toolbar-button {
